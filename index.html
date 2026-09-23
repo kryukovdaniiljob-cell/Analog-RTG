@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Подбор аналогов РТГ</title>
+<meta name="description" content="Подбор технического аналога по номенклатуре дивизиона РТГ: поиск по коду, наименованию и характеристикам.">
+<link rel="stylesheet" href="css/app.css?v=1">
+</head>
+<body>
+<header class="header">
+  <div class="container header__inner">
+    <a class="logo" href="./"><span class="logo__mark">РТГ</span><span class="logo__txt">Подбор аналогов</span></a>
+    <nav class="nav" id="nav" aria-label="Основная навигация">
+      <a class="nav__link is-active" href="#" data-tab="подбор">Подбор</a>
+      <a class="nav__link" href="#" data-tab="дубли">Дубли</a>
+      <a class="nav__link" href="#" data-tab="справка">Как это работает</a>
+    </nav>
+    <span class="stamp" id="stamp"></span>
+    <button class="burger" id="burger" aria-label="Открыть меню" aria-expanded="false" aria-controls="nav">
+      <span></span><span></span>
+    </button>
+  </div>
+</header>
+
+<main class="container">
+
+  <section class="tab is-active" id="tab-подбор">
+    <div class="filters" id="filters">
+      <label class="f f--wide">
+        <span class="f__lbl">Поиск</span>
+        <input id="q" type="search" placeholder="НС-код, наименование, бренд или размер" autocomplete="off">
+      </label>
+      <label class="f">
+        <span class="f__lbl">Направление</span>
+        <select id="f-напр"><option value="">все</option></select>
+      </label>
+      <label class="f">
+        <span class="f__lbl">Группа</span>
+        <select id="f-груп" disabled><option value="">все</option></select>
+      </label>
+      <label class="f">
+        <span class="f__lbl">Категория</span>
+        <select id="f-кат" disabled><option value="">все</option></select>
+      </label>
+      <label class="f">
+        <span class="f__lbl">Бренд</span>
+        <select id="f-бренд"><option value="">все</option></select>
+      </label>
+      <label class="f">
+        <span class="f__lbl">Замена</span>
+        <select id="f-зам">
+          <option value="">не важно</option>
+          <option value="есть">есть</option>
+          <option value="чужой">другого бренда</option>
+          <option value="нет">нет</option>
+        </select>
+      </label>
+      <button class="btn btn--ghost" id="сброс" type="button">Сбросить</button>
+    </div>
+
+    <div class="crumbs" id="crumbs"></div>
+    <div id="карточка"></div>
+
+    <div class="bar"><span id="итог" class="bar__count"></span></div>
+    <div class="list" id="список"></div>
+    <button class="btn btn--secondary more" id="ещё" type="button">Показать ещё</button>
+  </section>
+
+  <section class="tab" id="tab-дубли">
+    <div class="note">
+      <h2>Дубли внутри бренда</h2>
+      <p>Пары позиций одного бренда с полностью совпавшими признаками и одинаковым
+      типом товара. Это не аналоги, а два кода на один и тот же товар: повод
+      почистить матрицу.</p>
+    </div>
+    <label class="f f--wide"><span class="f__lbl">Поиск по дублям</span>
+      <input id="qd" type="search" placeholder="код, наименование или бренд" autocomplete="off"></label>
+    <div class="bar"><span id="итог-д" class="bar__count"></span></div>
+    <div class="list" id="список-д"></div>
+    <button class="btn btn--secondary more" id="ещё-д" type="button">Показать ещё</button>
+  </section>
+
+  <section class="tab" id="tab-справка">
+    <div class="note">
+      <h2>Когда позиция считается аналогом</h2>
+      <ol>
+        <li><b>Тот же тип товара.</b> Первое слово наименования. Угольник не бывает
+        заменой трубе, даже когда совпали диаметр и материал.</li>
+        <li><b>Совпал размер присоединения.</b> Хотя бы один: диаметр, резьба, DN,
+        объём. Совпадения по углу или давлению недостаточно.</li>
+        <li><b>Совпали все размеры</b>, которые есть у обеих позиций. Несовпадение
+        любого означает, что товар не встанет на место.</li>
+        <li><b>Та же категория.</b> По сборным категориям вроде «Прочее» подбор
+        отключён: аналог оттуда был бы случайным.</li>
+      </ol>
+      <h2>Две замены, а не список похожего</h2>
+      <p><b>Замена 1</b> это лучший технический аналог вообще. <b>Замена 2</b> это
+      лучший аналог другого бренда, если первый оказался своим. Так две ячейки
+      отвечают сразу на два вопроса: чем заменить и чем заменить у другого
+      поставщика. Прочерк означает, что равноценной замены в ассортименте нет.</p>
+      <h2>Откуда характеристики</h2>
+      <p>Разобраны из наименования: диаметр, толщина стенки, резьба в дюймах, DN,
+      исполнение ВР или НР, метрическая резьба, объём, угол, тонкость фильтрации,
+      материал, цвет, артикул. Дюймы и DN считаются одной величиной: 1&quot; и DN25
+      это один размер в двух записях.</p>
+      <h2>Чего инструмент не делает</h2>
+      <p>Совпадение признаков не означает, что замена допустима по проекту или по
+      договорённости с клиентом. Инструмент сужает выбор до одной-двух позиций,
+      решение остаётся за человеком.</p>
+    </div>
+  </section>
+
+</main>
+
+<footer class="footer"><div class="container">
+  <span id="footer-txt"></span>
+</div></footer>
+
+<script src="js/app.js?v=1"></script>
+</body>
+</html>

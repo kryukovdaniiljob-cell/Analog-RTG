@@ -168,16 +168,23 @@ function карточка(i) {
     '<table class="cmp"><thead><tr><th></th>' +
     ряд.map((x, j) => '<th>' + заг[j] + '<div class="sub">' + эк(D.б[x[2]]) + '</div></th>').join('') +
     '</tr><tr><th>Наименование</th>' +
-    ряд.map(x => '<td><div class="name">' + эк(x[1]) + '</div>' +
-      '<div class="code">' + эк(x[0]) + '</div>' +
-      '<a class="link" href="' + ссылка(x[0]) + '" target="_blank" rel="noopener">карточка</a></td>').join('') +
-    '</tr></thead><tbody>';
+    ряд.map(x => '<td><div class="name">' + эк(x[1]) + '</div></td>').join('') +
+    '</tr></thead><tbody>' +
+    /* НС-код отдельной строкой: внутри наименования его было не найти
+       глазом, а именно по нему и ищут позицию в 1С. */
+    '<tr><th>НС-код</th>' +
+    ряд.map(x => '<td class="v same"><b>' + эк(x[0]) + '</b>' +
+      ' <a class="link" href="' + ссылка(x[0]) + '" target="_blank" rel="noopener">карточка</a></td>').join('') +
+    '</tr>';
   поля.forEach(п => {
     const б = карта[0].get(п);
     h += '<tr><th>' + эк(п) + '</th>' + карта.map((m, j) => {
       const v = m.get(п);
       if (v === undefined) return '<td class="v miss">нет</td>';
-      const кл = j === 0 ? 'same' : (String(v) === String(б) ? 'same' : 'diff');
+      // Артикул у разных товаров разный всегда, и подсветка его как
+      // расхождения только сбивает: отличие там не содержательное.
+      const кл = (j === 0 || п === 'Артикул') ? 'same'
+        : (String(v) === String(б) ? 'same' : 'diff');
       return '<td class="v ' + кл + '">' + эк(v) + '</td>';
     }).join('') + '</tr>';
   });

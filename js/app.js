@@ -13,7 +13,7 @@ const эк = s => String(s).replace(/[&<>"]/g, c =>
 const ссылка = k => 'https://www.rusklimat.ru/search/?q=' + encodeURIComponent(k);
 
 /* ---------- загрузка */
-fetch('data.json?v=1').then(r => r.json()).then(d => {
+fetch('data.json?v=52ca89a546').then(r => r.json()).then(d => {
   D = d; P = d.p;
   // строка для поиска склеивается один раз: фильтр по 5886 позициям
   // на каждое нажатие клавиши должен быть мгновенным
